@@ -240,7 +240,7 @@ Wire Wire Line
 Wire Wire Line
 	6800 2750 7600 2750
 Wire Wire Line
-	4650 4500 6100 4500
+	4650 4500 8500 4500
 Wire Wire Line
 	6100 4500 6100 3200
 Wire Wire Line
@@ -258,8 +258,6 @@ F 3 "" H 1050 1100 60  0000 C CNN
 $EndComp
 Wire Wire Line
 	1300 1550 1400 1550
-Wire Wire Line
-	2250 4000 700  4000
 Wire Wire Line
 	700  1550 800  1550
 Wire Wire Line
@@ -371,14 +369,8 @@ NoConn ~ 7600 2100
 NoConn ~ 7600 2200
 NoConn ~ 7600 2300
 NoConn ~ 7600 2400
-NoConn ~ 7600 2500
 NoConn ~ 7600 2600
-NoConn ~ 7600 2900
-NoConn ~ 7600 3000
-NoConn ~ 7600 3100
 NoConn ~ 7600 3200
-NoConn ~ 8800 1700
-NoConn ~ 8800 1800
 NoConn ~ 8800 1900
 NoConn ~ 8800 2100
 NoConn ~ 8800 2200
@@ -390,11 +382,218 @@ NoConn ~ 8800 2700
 NoConn ~ 8800 2800
 NoConn ~ 8800 2900
 NoConn ~ 8800 3000
-NoConn ~ 8800 3100
 NoConn ~ 8800 3200
 Wire Wire Line
 	700  1950 700  1550
 Wire Wire Line
 	1400 1550 1400 4000
 Connection ~ 1400 4000
+Wire Wire Line
+	1400 4000 2250 4000
+Connection ~ 7600 1700
+Connection ~ 7600 1800
+Connection ~ 7600 1900
+Connection ~ 7600 2100
+Connection ~ 7600 2200
+Connection ~ 7600 2300
+Connection ~ 7600 2400
+Connection ~ 7600 2600
+Connection ~ 7600 3200
+Connection ~ 8800 1900
+Connection ~ 8800 2100
+Connection ~ 8800 2200
+Connection ~ 8800 2300
+Connection ~ 8800 2400
+Connection ~ 8800 2500
+Connection ~ 8800 2600
+Connection ~ 8800 2700
+Connection ~ 8800 2800
+Connection ~ 8800 2900
+Connection ~ 8800 3000
+Connection ~ 8800 3200
+Text Label 9000 1950 0    60   ~ 0
++5v
+Text Label 7250 1900 0    60   ~ 0
+gnd
+Text Label 7150 2600 0    60   ~ 0
+Rx
+Text Label 7200 2850 0    60   ~ 0
+Tx
+$Comp
+L LED D4
+U 1 1 573F4F20
+P 8700 4500
+F 0 "D4" H 8700 4600 50  0000 C CNN
+F 1 "LED" H 8700 4400 50  0000 C CNN
+F 2 "LEDs:LED-5MM" H 8700 4500 50  0001 C CNN
+F 3 "" H 8700 4500 50  0000 C CNN
+	1    8700 4500
+	-1   0    0    1   
+$EndComp
+$Comp
+L R R14
+U 1 1 573F5063
+P 9100 4350
+F 0 "R14" V 9180 4350 50  0000 C CNN
+F 1 "200" V 9100 4350 50  0000 C CNN
+F 2 "Discret:R4" V 9030 4350 50  0001 C CNN
+F 3 "" H 9100 4350 50  0000 C CNN
+	1    9100 4350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8800 3100 9300 3100
+Wire Wire Line
+	9300 3100 9300 4200
+Connection ~ 6100 4500
+Connection ~ 7100 4500
+$Comp
+L R R12
+U 1 1 573F55BE
+P 7200 4200
+F 0 "R12" V 7280 4200 50  0000 C CNN
+F 1 "5k" V 7200 4200 50  0000 C CNN
+F 2 "Discret:R4" V 7130 4200 50  0001 C CNN
+F 3 "" H 7200 4200 50  0000 C CNN
+	1    7200 4200
+	1    0    0    -1  
+$EndComp
+$Comp
+L SW_PUSH SW2
+U 1 1 573F55FD
+P 7500 3850
+F 0 "SW2" H 7650 3960 50  0000 C CNN
+F 1 "SW_PUSH" H 7500 3770 50  0000 C CNN
+F 2 "Buttons_Switches_ThroughHole:SW_Tactile_SPST_Angled" H 7500 3850 50  0001 C CNN
+F 3 "" H 7500 3850 50  0000 C CNN
+	1    7500 3850
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	7200 4500 7100 4500
+Wire Wire Line
+	9550 2000 9550 3850
+Connection ~ 9550 2000
+$Comp
+L SPEAKER SP1
+U 1 1 573F597E
+P 7150 2250
+F 0 "SP1" H 7050 2500 50  0000 C CNN
+F 1 "SPEAKER" H 7050 2000 50  0000 C CNN
+F 2 "Buzzers_Beepers:BUZZER" H 7150 2250 50  0001 C CNN
+F 3 "" H 7150 2250 50  0000 C CNN
+	1    7150 2250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6850 2150 6850 1950
+Connection ~ 6850 1950
+Wire Wire Line
+	7600 2500 6850 2500
+Wire Wire Line
+	6850 2500 6850 2350
+Wire Wire Line
+	9300 4200 9100 4200
+Wire Wire Line
+	9100 4500 8900 4500
+$Comp
+L R R13
+U 1 1 573F6506
+P 8850 4000
+F 0 "R13" V 8930 4000 50  0000 C CNN
+F 1 "200" V 8850 4000 50  0000 C CNN
+F 2 "Discret:R4" V 8780 4000 50  0001 C CNN
+F 3 "" H 8850 4000 50  0000 C CNN
+	1    8850 4000
+	1    0    0    -1  
+$EndComp
+$Comp
+L LED D3
+U 1 1 573F659D
+P 8500 4150
+F 0 "D3" H 8500 4250 50  0000 C CNN
+F 1 "LED" H 8500 4050 50  0000 C CNN
+F 2 "LEDs:LED-5MM" H 8500 4150 50  0001 C CNN
+F 3 "" H 8500 4150 50  0000 C CNN
+	1    8500 4150
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	7500 3400 8850 3400
+Wire Wire Line
+	8850 3400 8850 3850
+Wire Wire Line
+	8850 4150 8700 4150
+Wire Wire Line
+	8300 4150 8300 4500
+Connection ~ 8300 4500
+Wire Wire Line
+	9550 3850 7800 3850
+Wire Wire Line
+	7200 3000 7200 4050
+Wire Wire Line
+	7200 4350 7200 4500
+Connection ~ 7200 4500
+$Comp
+L R R11
+U 1 1 573F6B40
+P 7050 4200
+F 0 "R11" V 7130 4200 50  0000 C CNN
+F 1 "5k" V 7050 4200 50  0000 C CNN
+F 2 "Discret:R4" V 6980 4200 50  0001 C CNN
+F 3 "" H 7050 4200 50  0000 C CNN
+	1    7050 4200
+	1    0    0    -1  
+$EndComp
+$Comp
+L SW_PUSH SW1
+U 1 1 573F6BA9
+P 7500 3600
+F 0 "SW1" H 7650 3710 50  0000 C CNN
+F 1 "SW_PUSH" V 7500 3520 50  0000 C CNN
+F 2 "Buttons_Switches_ThroughHole:SW_Tactile_SPST_Angled" H 7500 3600 50  0001 C CNN
+F 3 "" H 7500 3600 50  0000 C CNN
+	1    7500 3600
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	7800 3850 7800 3600
+Wire Wire Line
+	7050 4350 7050 4500
+Connection ~ 7050 4500
+Wire Wire Line
+	7050 2900 7050 4050
+Wire Wire Line
+	7050 3600 7200 3600
+Connection ~ 7050 3600
+Connection ~ 7200 3850
+Wire Wire Line
+	7600 3100 7500 3100
+Wire Wire Line
+	7500 3100 7500 3400
+Wire Wire Line
+	7200 3000 7600 3000
+Wire Wire Line
+	7050 2900 7600 2900
+$Comp
+L CONN_01X03 P2
+U 1 1 573F79B8
+P 10550 1800
+F 0 "P2" H 10550 2000 50  0000 C CNN
+F 1 "CONN_01X03" V 10650 1800 50  0000 C CNN
+F 2 "Connect:Wafer_Horizontal10x5.8x7RM2.5-3" H 10550 1800 50  0001 C CNN
+F 3 "" H 10550 1800 50  0000 C CNN
+	1    10550 1800
+	1    0    0    -1  
+$EndComp
+NoConn ~ 10350 1800
+NoConn ~ 5600 3200
+Wire Wire Line
+	8800 1700 10350 1700
+Wire Wire Line
+	8800 1800 10100 1800
+Wire Wire Line
+	10100 1800 10100 1900
+Wire Wire Line
+	10100 1900 10350 1900
 $EndSCHEMATC
