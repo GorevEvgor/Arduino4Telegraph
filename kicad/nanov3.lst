@@ -1,0 +1,38 @@
+eeschema (2013-jul-07)-stable  >> Creation date: Вс. 07 февр. 2016 13:14:28
+#Cmp ( order = Reference )
+| D1         DIODE       ; ~           
+| D2         DIODE       ; ~           
+| J1         RJ45        ;             
+| P1         CONN_17     ;             
+| P2         CONN_17     ;             
+| R1         1k5         ; ~           
+| R2         1k          ; ~           
+| R3         100         ; ~           
+| R4         100k        ; ~           
+| R5         100k        ; ~           
+| R6         100         ; ~           
+| R7         100         ; ~           
+| R8         5k          ; ~           
+| U1         4N33        ; ~           
+| U2         4N33        ; ~           
+#End Cmp
+
+#Cmp ( order = Value )
+| DIODE        D1        ; ~           
+| DIODE        D2        ; ~           
+| RJ45         J1        ;             
+| CONN_17      P1        ;             
+| CONN_17      P2        ;             
+| 100          R3        ; ~           
+| 100          R6        ; ~           
+| 100          R7        ; ~           
+| 1k           R2        ; ~           
+| 1k5          R1        ; ~           
+| 5k           R8        ; ~           
+| 100k         R4        ; ~           
+| 100k         R5        ; ~           
+| 4N33         U1        ; ~           
+| 4N33         U2        ; ~           
+#End Cmp
+
+#End List

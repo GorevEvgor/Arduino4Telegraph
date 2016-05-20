@@ -1,0 +1,108 @@
+Cmp-Mod V01 Created by CvPcb (2013-jul-07)-stable date = Вс. 07 февр. 2016 13:28:38
+
+BeginCmp
+TimeStamp = /569E8699;
+Reference = D1;
+ValeurCmp = DIODE;
+IdModule  = D4;
+EndCmp
+
+BeginCmp
+TimeStamp = /569E8D13;
+Reference = D2;
+ValeurCmp = DIODE;
+IdModule  = D4;
+EndCmp
+
+BeginCmp
+TimeStamp = /56B71753;
+Reference = J1;
+ValeurCmp = RJ45;
+IdModule  = RJ45_8;
+EndCmp
+
+BeginCmp
+TimeStamp = /56B713F0;
+Reference = P1;
+ValeurCmp = CONN_17;
+IdModule  = SIL-18;
+EndCmp
+
+BeginCmp
+TimeStamp = /56B71416;
+Reference = P2;
+ValeurCmp = CONN_17;
+IdModule  = SIL-18;
+EndCmp
+
+BeginCmp
+TimeStamp = /569E86C0;
+Reference = R1;
+ValeurCmp = 1k5;
+IdModule  = R4;
+EndCmp
+
+BeginCmp
+TimeStamp = /569E8D19;
+Reference = R2;
+ValeurCmp = 1k;
+IdModule  = R4;
+EndCmp
+
+BeginCmp
+TimeStamp = /569E8840;
+Reference = R3;
+ValeurCmp = 100;
+IdModule  = R4;
+EndCmp
+
+BeginCmp
+TimeStamp = /569E8D5E;
+Reference = R4;
+ValeurCmp = 100k;
+IdModule  = R4;
+EndCmp
+
+BeginCmp
+TimeStamp = /569E8AD4;
+Reference = R5;
+ValeurCmp = 100k;
+IdModule  = R4;
+EndCmp
+
+BeginCmp
+TimeStamp = /569E8AC5;
+Reference = R6;
+ValeurCmp = 100;
+IdModule  = R4;
+EndCmp
+
+BeginCmp
+TimeStamp = /569E8D58;
+Reference = R7;
+ValeurCmp = 100;
+IdModule  = R4;
+EndCmp
+
+BeginCmp
+TimeStamp = /569E8B22;
+Reference = R8;
+ValeurCmp = 5k;
+IdModule  = R4;
+EndCmp
+
+BeginCmp
+TimeStamp = /569E87D7;
+Reference = U1;
+ValeurCmp = 4N33;
+IdModule  = DIP-6__300;
+EndCmp
+
+BeginCmp
+TimeStamp = /569E8D25;
+Reference = U2;
+ValeurCmp = 4N33;
+IdModule  = DIP-6__300;
+EndCmp
+
+EndListe
