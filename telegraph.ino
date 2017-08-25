@@ -1,7 +1,13 @@
-#include <AltSerial5.h>
+#define BITS 5
+#include <AltSoftSerial.h>
 #include "tables.h"
+#define RX_LEN 200
+#define BUTTON_1 10   //12 in v1
+#define BUTTON_2 11
+#define LED_1 13
+#define LED_2 12
 
-AltSerial5 mySerial; // 8 RX, 9 TX
+AltSoftSerial mySerial; // 8 RX, 9 TX
 
 
 /*
@@ -22,20 +28,22 @@ uint8_t mtk2ascii[] = { 2 , 'E',10, 'A',' ', 'S', 'I', 'U',13, 'D', 'R', 'J', 'N
 uint8_t * mtk2ascii,* ascii2mtk;
 uint8_t * to_ascii[] = { mtk2cp866, mtk2koi8r, mtk2cp1251 };
 uint8_t * to_mtk2[]  = { cp8662mtk, koi8r2mtk, cp12512mtk };
-char * tables[] = {"cp866","koi8r","cp1251"};
-int speeds[] = {50,100,150,200,300};
+char * tables[] = {"cp866","koi8r","cp1251","utf8"};
+int speeds[] = {50,100,200,300};
 
 uint8_t Registr = 2;
 uint8_t Code = 2;
+uint8_t Utf8 = 1;
 uint8_t Speed = 1;
 uint8_t prev = 0;
 uint8_t malt_send = 0;
-uint8_t send_ao = 0;
+uint8_t send_ao = 1;
 uint8_t request = 0;
-uint8_t last_butt_state = 0;
-uint8_t butt_state = 0;
+uint8_t last_butt1_state = 0;
+uint8_t butt1_state = 0;
+uint8_t last_butt2_state = 0;
+uint8_t butt2_state = 0;
 uint8_t i;
-#define RX_LEN 200
 uint8_t rx_buff[RX_LEN];
 int rx_head = 0;
 int rx_tail = 0;
@@ -47,15 +55,18 @@ void setup() {
     mySerial.begin(speeds[Speed]);
     mtk2ascii = to_ascii[Code];
     ascii2mtk = to_mtk2[Code];
-    pinMode(13, OUTPUT);
-    pinMode(12, INPUT);
+    pinMode(LED_1, OUTPUT);
+    pinMode(LED_2, OUTPUT);
+    pinMode(BUTTON_1, INPUT);
+    pinMode(BUTTON_2, INPUT);
 //Serial.println(" 8 pin RX, 9 pin TX");
 Serial.println(" % change code table, [] change speed");
 Serial.println(" @ rus, # num, $ lat, * req AO, ~ send AO, ESC on/off AO");
-Serial.print(" current table "); Serial.println(tables[Code]);
+Serial.print(" current table "); Serial.println(tables[Code+Utf8]);
 Serial.print(" current speed "); Serial.println(speeds[Speed]);
 Serial.print(" auto answer "); Serial.println(send_ao?"on":"off");
-digitalWrite(13, request);
+digitalWrite(LED_1, request);
+digitalWrite(LED_2, send_ao);
 beep();
 };
 
@@ -66,13 +77,14 @@ void loop() {
   uint8_t v;
   if (mySerial.available()) {
     v=mySerial.read();
+    flash(v);
     buf_write(v);
     if (buf_cmp(zc) or buf_cmp(nn)) {
       ao_block = 1;
       beephz = 880;
       send_ao = 0;
+      digitalWrite(LED_2, send_ao);
     }
-    flash();
 //    Serial.print("recv "); Serial.println(v);
     newchar = mtk2ascii[v + ((Registr - 1) << 5)];
     if (newchar < 4) Registr = newchar;
@@ -82,36 +94,58 @@ void loop() {
         if (send_ao) ao();
         else {
           request = HIGH;
-          digitalWrite(13,request);
+          digitalWrite(LED_1,request);
           beep();
         }
       malt_send=0;
     }
-    else Serial.write(newchar);
+    else {
+      if (! Utf8 or newchar < 0xc0 ){
+        Serial.write(newchar);
+      } else {
+//    Serial.print("line read "); Serial.println(newchar);
+        Serial.write(0xd0);
+        Serial.write(newchar-0xc0+0x90);
+      }
+    }
     prev = v;
   }
   if (Serial.available()) {
     newchar = Serial.read();
+    if (Utf8 and ((newchar & 0xfe) == 0xd0)) {
+      i = 30;
+      while (!Serial.available() and (i-- > 0)) delay(10);
+      if (i > 0) {
+        newchar = (Serial.read() & 0x3f) + ((newchar & 0x01) << 6);
+        if ((newchar >= 0x10) and (newchar <= 0x4f)) newchar += 0xb0;
+      }
+    }
     switch (newchar) {
 	case '%':
-	    Code++;
+            if (Code == 2 and Utf8 == 0) {
+              Utf8 = 1;
+            } else {
+	      Code++; 
+              Utf8 = 0;
+            }
 	    if (Code > 2) Code = 0;
-	    Serial.print("code "); Serial.println(tables[Code]);
+	    Serial.print("code "); Serial.println(tables[Code+Utf8]);
 	    mtk2ascii = to_ascii[Code];
 	    ascii2mtk = to_mtk2[Code];
 	    break;
 	case '[':
-	    if (Speed == 0) Speed=4; else Speed--;
+	    if (Speed == 0) Speed=3; else Speed--;
 	    Serial.print("speed "); Serial.println(speeds[Speed]);
 	    mySerial.begin(speeds[Speed]);
 	    break;
 	case ']':
-	    if (Speed == 4) Speed=0; else Speed++;
+	    if (Speed == 3) Speed=0; else Speed++;
 	    Serial.print("speed "); Serial.println(speeds[Speed]);
 	    mySerial.begin(speeds[Speed]);
 	    break;
         case 27:
             send_ao ^= 1;
+            digitalWrite(LED_2, send_ao);
             ao_block = 0;
             beephz = 440;
 	    Serial.print("auto answer "); Serial.println(send_ao?"on":"off");
@@ -135,18 +169,36 @@ void loop() {
 	    }
     }
   }
-  if (!ao_block and digitalRead(12) != last_butt_state) {
-    butt_state = 0; 
+  if (!ao_block and digitalRead(BUTTON_1) != last_butt1_state) {
+    butt1_state = 0; 
     delay (40);
-    for (i=5; i--; delay(40)) butt_state += digitalRead(12);
-    if (butt_state == 5) butt_state = HIGH;
-    else if (butt_state == 0) butt_state = LOW;
-    else butt_state = last_butt_state;
-    if (butt_state != last_butt_state) {
-      if (butt_state == HIGH) ao();
-      last_butt_state = butt_state;
+    for (i=5; i--; delay(40)) butt1_state += digitalRead(BUTTON_1);
+    if (butt1_state == 5) butt1_state = HIGH;
+    else if (butt1_state == 0) butt1_state = LOW;
+    else butt1_state = last_butt1_state;
+    if (butt1_state != last_butt1_state) {
+      if (butt1_state == HIGH) ao();
+      last_butt1_state = butt1_state;
     }
   }
+
+  if (digitalRead(BUTTON_2) != last_butt2_state) {
+    butt2_state = 0; 
+    delay (40);
+    for (i=5; i--; delay(40)) butt2_state += digitalRead(BUTTON_2);
+    if (butt2_state == 5) butt2_state = HIGH;
+    else if (butt2_state == 0) butt2_state = LOW;
+    else butt2_state = last_butt2_state;
+    if (butt2_state != last_butt2_state) {
+      if (butt2_state == HIGH) {
+        send_ao ^=1;
+        digitalWrite(LED_2, send_ao);
+      }
+      last_butt2_state = butt2_state;
+    }
+  }
+
+
 }
 
 void ao() {
@@ -155,13 +207,15 @@ void ao() {
   uint8_t i;
   for (i = 0; i < ao_len; i++) mySerial.write(ao_text[i]);
   request = LOW;
-  digitalWrite(13,request);
+  digitalWrite(LED_1,request);
 }
 
-void flash() {
-  digitalWrite(13,request ^ HIGH);
+void flash(uint8_t v) {
+  tone(6, 400 * (v+1) , 10);
+  digitalWrite(LED_1,request ^ HIGH);
   delay(10);
-  digitalWrite(13,request);
+  digitalWrite(LED_1,request);
+  noTone(6);
 }
 
 void beep() {
@@ -169,8 +223,6 @@ void beep() {
   delay(200);
   noTone(6);
 }
-
-
 
 void buf_write(uint8_t c) {
   rx_tail++;
